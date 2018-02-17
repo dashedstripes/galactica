@@ -37,8 +37,15 @@
     }
 
     const abi = JSON.parse('[{"constant":false,"inputs":[{"name":"id","type":"uint256"}],"name":"getArticleByID","outputs":[{"name":"","type":"string"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getCurrentArticleID","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"content","type":"string"}],"name":"createArticle","outputs":[],"payable":false,"type":"function"}]')
-    const contractAddress = '0x345ca3e014aaf5dca488057592ee47305d9b3e10'
+    const contractAddress = '0x38cf23c52bb4b13f051aec09580a2de845a7fa35'
     const contract = web3.eth.contract(abi).at(contractAddress)
+
+    var event = contract.ArticleCreated()
+
+    event.watch((error, result) => {
+      if (!error)
+        console.log(result)
+    })
 
     var app = new Vue({
       el: '#app',
