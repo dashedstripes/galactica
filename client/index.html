@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+
+  <div id="app">
+
+    {{ currentArticle }}
+
+    <hr>
+
+    <input type="text" v-model="text">
+    <button v-on:click="submitArticle">Submit Article</button>
+
+    <hr>
+
+    <input type="number" v-model="id">
+    <button v-on:click="getArticle">Get article</button>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+
+  <script>
+
+    if (typeof web3 !== 'undefined') {
+      web3 = new Web3(web3.currentProvider);
+    } else {
+      // set the provider you want from Web3.providers
+      web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+    }
+
+    const abi = JSON.parse('[{"constant":false,"inputs":[{"name":"id","type":"uint256"}],"name":"getArticleByID","outputs":[{"name":"","type":"string"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"getCurrentArticleID","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"content","type":"string"}],"name":"createArticle","outputs":[],"payable":false,"type":"function"}]')
+    const contractAddress = '0x345ca3e014aaf5dca488057592ee47305d9b3e10'
+    const contract = web3.eth.contract(abi).at(contractAddress)
+
+    var app = new Vue({
+      el: '#app',
+      data: {
+        currentArticle: '',
+        text: '',
+        id: 0
+      },
+      methods: {
+        submitArticle: function (e) {
+          contract.createArticle.sendTransaction(this.$data.text, (error, result) => {
+            if (error) {
+              console.log(error)
+            }
+
+            console.log(result)
+          })
+        },
+        getArticle: function (e) {
+          contract.getArticleByID.call(this.$data.id, (error, result) => {
+            if (error) {
+              console.log(error)
+            }
+
+            this.$data.currentArticle = result
+          })
+        }
+      }
+    })
+
+  </script>
+</body>
+
+</html>

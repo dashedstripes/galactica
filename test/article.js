@@ -28,6 +28,7 @@ contract('Article', () => {
         return instance.getCurrentArticleID.call()
       })
       .then((id) => {
+        // Expect the number to be two, as we've already called the method twice in our tests
         assert.equal(id.toNumber(), 2)
       })
   })

@@ -1,0 +1,12 @@
+{
+  "name": "galactica",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:dashedstripes/galactica.git",
+  "author": "Adam Gray <adam@pateo.co>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.16.2",
+    "nodemon": "^1.15.0"
+  }
+}
